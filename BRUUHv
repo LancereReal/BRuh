@@ -1,0 +1,110 @@
+if game.CoreGui:FindFirstChild("GameGui") then
+	game.CoreGui["GameGui"]:Destroy()
+end
+
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/UI-Librarys/main/Zypher%20(HOT!)"))()
+
+local Main = library:CreateMain({
+    -- Required
+    projName = "GameGui", -- The name for the UI in game.CoreGui, not the GUI itself.
+    -- Optional
+    Resizable = true, -- Requires MinSize and MaxSize
+    MinSize = UDim2.new(0, 400, 0, 400),
+    MaxSize = UDim2.new(0, 750, 0, 500)
+})
+
+-- A category is a tab
+local Category = Main:CreateCategory("Scripts")
+local Category1 = Main:CreateCategory("Settings")
+
+
+-- Self explanatory
+local Section = Category:CreateSection("Misc.")
+local Section2 = Category1:CreateSection("General Settings")
+
+local plr = game.Players.LocalPlayer
+local chr = plr.Character
+local hrp = chr.HumanoidRootPart
+
+local Text1 = Section2:Create(
+    "Textlabel",
+    "Press Right Alt to toggle on and off" -- The text for the label
+) 
+
+
+
+Section:Create("Slider", "Walk Speed", -- The name of the slider
+    function(w)
+        game:GetService("Workspace").FoxysCove102.Humanoid.WalkSpeed = w
+    end,
+    {
+        -- Required
+        min = 16, -- Smallest value on the slider
+        max = 500, -- Largest value on the slider
+
+        -- Optional
+        default = 16,
+        precise = false, -- Whether to do decimal values
+        changeablevalue = false-- Should the slider be changeable
+    }
+)
+
+Section:Create("Slider", "Jump Height", -- The name of the slider
+    function(j)
+        game:GetService("Workspace").FoxysCove102.Humanoid.JumpPower = j
+    end,
+    {
+        -- Required
+        min = 50, -- Smallest value on the slider
+        max = 500, -- Largest value on the slider
+
+        -- Optional
+        default = 50,
+        precise = false, -- Whether to do decimal values
+        changeablevalue = false-- Should the slider be changeable
+    }
+)
+
+Section2:Create("Keybind", "Gui Toggle", -- The name of the keybind
+    function()
+        -- Callback
+        if game.CoreGui.GameGui.Enabled == false then
+        	game.CoreGui.GameGui.Enabled = true
+        
+        elseif game.CoreGui.GameGui.Enabled == true then
+        	game.CoreGui.GameGui.Enabled = false
+        end
+    end,
+    {
+        -- Optional
+        default = Enum.KeyCode.RightAlt
+    }
+)
+
+local Text2 = Section2:Create(
+    "Textlabel",
+    "The gui was made by Lancere/Ham" -- The text for the label
+)
+
+local NightLight = Section:Create("Button", "Give Click Teleport Tool",
+	function()
+		local plr = game:GetService("Players").LocalPlayer
+		local mouse = plr:GetMouse()
+
+		local tool = Instance.new("Tool")
+		tool.RequiresHandle = false
+		tool.Name = "Click Teleport"
+
+		tool.Activated:Connect(function()
+		local root = plr.Character.HumanoidRootPart
+		local pos = mouse.Hit.Position+Vector3.new(0,2.5,0)
+		local offset = pos-root.Position
+		root.CFrame = root.CFrame+offset
+		end)
+
+		tool.Parent = plr.Backpack
+	end,
+	{
+		animated = true
+	}
+)
